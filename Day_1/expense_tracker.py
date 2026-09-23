@@ -75,14 +75,14 @@ def main():
                 print("No expenses recorded yet.")
             else:
                 total = calculate_total_expenses(expenses)
-                print(f"Total Expenses: ${total:.2f}")
+                print(f"Total Expenses: INR {total:.2f}")
 
         elif choice == "3":
             highest = find_highest_expense(expenses)
             if highest is None:
                 print("No expenses recorded yet.")
             else:
-                print(f"Highest Expense: ${highest['amount']:.2f} ({highest['category']})")
+                print(f"Highest Expense: INR {highest['amount']:.2f} ({highest['category']})")
 
         elif choice == "4":
             if not expenses:
@@ -91,7 +91,7 @@ def main():
                 category_totals = calculate_category_spending(expenses)
                 print("Total Spending by Category:")
                 for category, total in category_totals.items():
-                    print(f" - {category}: ${total:.2f}")
+                    print(f" - {category}: INR {total:.2f}")
 
         elif choice == "5":
             if not expenses:
@@ -105,7 +105,7 @@ def main():
                     if results:
                         print(f"Expenses in category '{search_category}':")
                         for item in results:
-                            print(f" - ${item['amount']:.2f} ({item['category']})")
+                            print(f" - INR {item['amount']:.2f} ({item['category']})")
                     else:
                         print(f"No expenses found for category '{search_category}'.")
 
