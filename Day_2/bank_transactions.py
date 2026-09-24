@@ -169,7 +169,7 @@ def display_menu():
     print("2. Calculate Balance")
     print("3. View Summary")
     print("4. View Transactions by Type")
-    print("5. View Large Transactions")
+    print("5. View Largest Transaction")
     print("6. Find Largest Withdrawal")
     print("7. Find Second Largest Transaction")
     print("8. Exit")
@@ -219,13 +219,10 @@ def main():
             if not transactions:
                 print("No transactions recorded yet.")
             else:
-                results = get_large_transactions(transactions)
-                if results:
-                    print(f"Transactions greater than {CONFIG['currency']}{CONFIG['large_amount']:.2f}:")
-                    for t in results:
-                        print(f" - {t['type'].capitalize()}: {CONFIG['currency']}{t['amount']:.2f} ({t['description']})")
-                else:
-                    print(f"No transactions found greater than {CONFIG['currency']}{CONFIG['large_amount']:.2f}.")
+                largest = get_large_transactions(transactions)
+                if largest:
+                    desc = f" ({largest['description']})" if largest.get("description") else ""
+                    print(f"Largest Transaction: {largest['type'].capitalize()} of {CONFIG['currency']}{largest['amount']:.2f}{desc}")
 
         elif choice == "6":
             if not transactions:
