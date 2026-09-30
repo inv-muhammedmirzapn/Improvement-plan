@@ -1,7 +1,7 @@
 from django.conf import settings
 from rest_framework import serializers
 
-from .models import Booking, BookingSeat, Payment
+from .models import Booking, BookingSeat, Event, Payment, Seat
 
 
 class BookSeatsRequestSerializer(serializers.Serializer):
@@ -43,3 +43,24 @@ class BookingSerializer(serializers.ModelSerializer):
         return sorted(
             str(s) for s in BookingSeat.objects.filter(booking=obj).values_list("seat_id", flat=True)
         )
+
+
+class SeatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Seat
+        fields = ["id", "event", "seat_number", "status", "price"]
+
+
+class EventSerializer(serializers.ModelSerializer):
+    total_seats = serializers.SerializerMethodField()
+    available_seats = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Event
+        fields = ["id", "name", "starts_at", "status", "total_seats", "available_seats"]
+
+    def get_total_seats(self, obj):
+        return obj.seats.count()
+
+    def get_available_seats(self, obj):
+        return obj.seats.filter(status=Seat.Status.AVAILABLE).count()

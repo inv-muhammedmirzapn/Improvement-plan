@@ -15,8 +15,15 @@ from .exceptions import (
     SeatsUnavailable,
     TemporaryDatabaseError,
 )
-from .models import Booking, Payment
-from .serializers import BookingSerializer, BookSeatsRequestSerializer, PaymentSerializer, WebhookSerializer
+from .models import Booking, Event, Payment, Seat
+from .serializers import (
+    BookingSerializer,
+    BookSeatsRequestSerializer,
+    EventSerializer,
+    PaymentSerializer,
+    SeatSerializer,
+    WebhookSerializer,
+)
 from .services import booking as booking_service
 from .services import payments as payment_service
 
@@ -123,3 +130,47 @@ class PaymentWebhookView(APIView):
         except TemporaryDatabaseError:
             return _busy()  # 5xx => gateway retries the webhook
         return Response({"result": outcome}, status=status.HTTP_200_OK)  # 200 for first delivery and duplicates
+
+
+class EventListView(APIView):
+    """List all events with their statuses and seat availability counts."""
+    def get(self, request):
+        events = Event.objects.all().order_by("-starts_at")
+        return Response(EventSerializer(events, many=True).data)
+
+
+class EventSeatsView(APIView):
+    """List seats for an event, optionally filtered by ?status=AVAILABLE."""
+    def get(self, request, event_id):
+        event = Event.objects.filter(pk=event_id).first()
+        if not event:
+            return Response({"detail": "Event not found."}, status=status.HTTP_404_NOT_FOUND)
+        seats = Seat.objects.filter(event_id=event_id).order_by("seat_number")
+        status_filter = request.query_params.get("status")
+        if status_filter:
+            seats = seats.filter(status=status_filter.upper())
+        return Response(SeatSerializer(seats, many=True).data)
+
+
+class BookingListView(APIView):
+    """List bookings, optionally filtered by user_id or status."""
+    def get(self, request):
+        bookings = Booking.objects.select_related("payment").all().order_by("-created_at")
+        user_id = (
+            request.user.id
+            if (request.user and request.user.is_authenticated)
+            else request.query_params.get("user_id")
+        )
+        if user_id:
+            bookings = bookings.filter(user_id=user_id)
+        status_param = request.query_params.get("status")
+        if status_param:
+            bookings = bookings.filter(status=status_param.upper())
+        return Response(BookingSerializer(bookings, many=True).data)
+
+
+class PaymentListView(APIView):
+    """List all payments."""
+    def get(self, request):
+        payments = Payment.objects.select_related("booking").all().order_by("-created_at")
+        return Response(PaymentSerializer(payments, many=True).data)
