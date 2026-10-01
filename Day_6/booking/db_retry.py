@@ -67,7 +67,7 @@ def retry_on_db_error(max_attempts=4, base_delay=0.05):
                 except (OperationalError, InterfaceError) as exc:
                     retryable, should_reconnect = _is_retryable(exc)
                     if not retryable or attempt == max_attempts:
-                        raise TemporaryDatabaseError(str(exc)) from exc
+                        raise TemporaryDatabaseError(str(exc)) from exc #503
                     log.warning("db error in %s (attempt %d): %s, retrying", fn.__name__, attempt, exc)
                     if should_reconnect:
                         connection.close()  # force reconnect on next query
