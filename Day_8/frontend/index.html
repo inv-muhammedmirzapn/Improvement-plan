@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Management Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>Product Management Dashboard</h1>
+    </header>
+
+    <!-- Statistics Section -->
+    <section class="stats-section">
+      <div class="stat-card">
+        <h3>Total Products</h3>
+        <p id="stat-total-count">0</p>
+      </div>
+
+      <div class="stat-card">
+        <h3>Average Price</h3>
+        <p id="stat-avg-price">₹0.00</p>
+      </div>
+
+      <div class="stat-card">
+        <h3>Highest-Priced Product</h3>
+        <p id="stat-highest-product">-</p>
+      </div>
+
+      <div class="stat-card">
+        <h3>Products in Stock</h3>
+        <p id="stat-in-stock-count">0</p>
+      </div>
+    </section>
+
+    <!-- Controls Section: Search, Category Filter, Preferred Category Cookie, Sort, Favorites -->
+    <section class="controls-section">
+      <div class="control-item">
+        <label for="search-input">Search by Name:</label>
+        <input type="text" id="search-input" placeholder="Search products...">
+      </div>
+
+      <div class="control-item">
+        <label for="category-select">Category:</label>
+        <select id="category-select">
+          <option value="All">All Categories</option>
+        </select>
+      </div>
+
+
+      <div class="control-item">
+        <label for="sort-select">Sort By:</label>
+        <select id="sort-select">
+          <option value="name-asc">Name (A → Z)</option>
+          <option value="price-asc">Price (Low → High)</option>
+          <option value="price-desc">Price (High → Low)</option>
+          <option value="rating-desc">Rating (High → Low)</option>
+        </select>
+      </div>
+
+      <div class="control-item checkbox-item">
+        <label>
+          <input type="checkbox" id="show-favorites-checkbox"> Show Favorites Only
+        </label>
+      </div>
+    </section>
+
+    <!-- Product Catalog Section -->
+    <section class="products-section">
+      <h2>Products</h2>
+      <div id="loading-state" style="display: none;">Loading products...</div>
+      <div id="empty-state" style="display: none;">No products found matching your criteria.</div>
+      <div id="products-grid" class="products-grid"></div>
+    </section>
+
+    <!-- Product Details Section (uses async/await for checkProductAvailability) -->
+    <section id="product-details-section" class="details-section" style="display: none;">
+      <h2>Product Details</h2>
+      <div id="product-details-content"></div>
+    </section>
+
+    <!-- Recently Viewed Products Section -->
+    <section class="recently-viewed-section">
+      <h2>Recently Viewed Products</h2>
+      <div id="recently-viewed-list" class="recently-viewed-grid"></div>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
