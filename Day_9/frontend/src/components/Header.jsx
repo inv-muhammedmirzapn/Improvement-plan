@@ -7,7 +7,6 @@ export default function Header({
   cartCount,
   cartTotal,
   onOpenCart,
-  dataSource,
 }) {
   return (
     <header className="site-header">

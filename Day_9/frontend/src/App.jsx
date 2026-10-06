@@ -17,7 +17,6 @@ export default function App() {
   const [sortBy, setSortBy] = useState('default');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [dataSource, setDataSource] = useState('backend');
 
   // Cart State (loaded from localStorage)
   const [cartItems, setCartItems] = useState(() => {
@@ -73,7 +72,6 @@ export default function App() {
         search: searchQuery,
       });
       setProducts(res.data);
-      setDataSource(res.source);
     } catch (err) {
       setError(err.message || 'Error fetching products from server');
     } finally {
@@ -178,7 +176,6 @@ export default function App() {
         cartCount={cartCount}
         cartTotal={cartTotal}
         onOpenCart={() => setIsCartOpen(true)}
-        dataSource={dataSource}
       />
 
       {/* Main Content */}

@@ -73,34 +73,16 @@ Day_9/
 │   ├── package.json
 │   └── vite.config.js         # Vite proxy to backend API
 ├── requirements.txt           # Python dependencies (Django, DRF, CORS)
-├── run.sh                     # Quick start runner script
 └── venv/                      # Python virtual environment
 ```
 
 ---
 
-## 🛠️ Quick Start Guide
+## 🛠️ How to Run Manually
 
-### Option 1: Automatic Runner (Recommended)
+### 1. Backend (Django)
 
-From the `Day_9` directory, run:
-
-```bash
-chmod +x run.sh
-./run.sh
-```
-
-This will automatically:
-1. Activate or create the Python `venv`
-2. Install Python dependencies
-3. Run database migrations & seed initial products
-4. Start both the Django API server (`http://127.0.0.1:8000`) and the Vite React server (`http://localhost:5173`)
-
----
-
-### Option 2: Manual Step-by-Step
-
-#### 1. Backend (Django with `venv`)
+In your first terminal:
 
 ```bash
 cd /home/muhammedmirzapn/10-day-improvement-plan/Day_9
@@ -108,15 +90,13 @@ cd /home/muhammedmirzapn/10-day-improvement-plan/Day_9
 # Activate the virtual environment
 source venv/bin/activate
 
-# Apply migrations and seed sample products
-python backend/manage.py migrate
-python backend/manage.py seed_products
-
-# Start Django server
-python backend/manage.py runserver 127.0.0.1:8000
+# Start Django development server
+python backend/manage.py runserver
 ```
 
-#### 2. Frontend (React with Vite)
+(Or `cd /home/muhammedmirzapn/10-day-improvement-plan/Day_9/backend && python manage.py runserver`)
+
+### 2. Frontend (React with Vite)
 
 In a separate terminal:
 
