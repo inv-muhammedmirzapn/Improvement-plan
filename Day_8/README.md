@@ -150,13 +150,26 @@ When the frontend invokes `fetch('http://127.0.0.1:8000/api/products/')`, the fo
 
 ### 5. Difference Between localStorage, sessionStorage, and Cookies
 
-| Property | `localStorage` | `sessionStorage` | `Cookies` (`document.cookie`) |
-| :--- | :--- | :--- | :--- |
-| **Persistence / Lifetime** | Persistent across browser sessions until explicitly cleared. | Cleared automatically when the browser tab or window is closed. | Configurable via `expires` or `max-age`; can persist or act as session cookies. |
-| **Storage Capacity** | ~5 MB to 10 MB per origin. | ~5 MB per origin. | ~4 KB per cookie (limited). |
-| **Server Transmission** | Never transmitted over HTTP requests automatically; client-side only. | Never transmitted over HTTP requests automatically; client-side only. | Sent to the server automatically with every matching HTTP request header (`Cookie:`). |
-| **Accessibility** | Any window/tab of the same origin. | Only the specific tab that opened it. | Accessible to both client scripts (unless `HttpOnly`) and server. |
-| **Dashboard Usage** | **Favorite Product IDs (`⭐`)** — retained after refresh/restart. | **Recently Viewed Products (`🕒`)** — active during user browsing session. | **Preferred Category (`🍪`)** — persists user default category preference. |
+#### 1. `localStorage`
+- **Persistence / Lifetime**: Data persists indefinitely across browser sessions and reboots until explicitly cleared by user or script (`localStorage.removeItem()` / `clear()`).
+- **Storage Capacity**: ~5 MB to 10 MB per origin.
+- **Server Transmission**: Never transmitted to the server automatically; purely client-side.
+- **Scope & Accessibility**: Accessible across all browser tabs and windows from the same origin.
+- **Dashboard Usage**: Stores **Favorite Product IDs (`⭐`)**, keeping saved favorites persistent across browser restarts.
+
+#### 2. `sessionStorage`
+- **Persistence / Lifetime**: Temporary storage tied directly to the current browser tab. Data is cleared automatically as soon as the tab or window is closed.
+- **Storage Capacity**: ~5 MB per origin.
+- **Server Transmission**: Never transmitted to the server automatically; purely client-side.
+- **Scope & Accessibility**: Isolated to the single tab that created it. Not shared between multiple tabs.
+- **Dashboard Usage**: Stores **Recently Viewed Products (`🕒`)**, maintaining browsing history only for the active session.
+
+#### 3. `Cookies` (`document.cookie`)
+- **Persistence / Lifetime**: Configurable expiration set via `expires` or `Max-Age`. Can act as a session cookie or persist for days/months.
+- **Storage Capacity**: Very limited (~4 KB per cookie, max ~50 cookies per domain).
+- **Server Transmission**: Transmitted automatically to the server on every matching HTTP request via the `Cookie:` header.
+- **Scope & Accessibility**: Accessible to both client-side JavaScript (unless marked `HttpOnly`) and the backend server.
+- **Dashboard Usage**: Stores the **Preferred Category (`🍪`)**, automatically remembering category preferences for subsequent visits.
 
 ---
 
@@ -200,4 +213,3 @@ To inspect the live API request and response:
 - [x] **Promise Handling (.then)**: "Quick Check" button executes `checkProductAvailability().then().catch()`.
 - [x] **Promise Handling (async/await)**: "View Details" opens modal executing `await checkProductAvailability()`.
 - [x] **Recently Viewed**: Products inspected are recorded in `sessionStorage` and visible in Recent section.
-- [x] **Aesthetics**: Responsive dark glassmorphic UI with vibrant accents, micro-animations, and clean typography.
